@@ -158,7 +158,7 @@ func (rt *RequestToken) AuthorizeUrl() string {
 	return fmt.Sprintf("%s?oauth_token=%s", authorizeUrl.Raw, rt.OAuthToken)
 }
 
-func (o *OAuthClient) GetAccessToken(requestToken *RequestToken, OAuthVerifier string) (*AccessToken, os.Error) {
+func (o *OAuthClient) GetAccessToken(requestToken *RequestToken, OAuthVerifier string) (*AccessToken, error) {
 	if requestToken == nil || requestToken.OAuthToken == "" || requestToken.OAuthTokenSecret == "" {
 		return nil, os.NewError("Invalid Request token")
 	}
@@ -206,7 +206,7 @@ func (o *OAuthClient) GetAccessToken(requestToken *RequestToken, OAuthVerifier s
 
 }
 
-func (c *oauthStreamClient) connect() (*http.Response, os.Error) {
+func (c *oauthStreamClient) connect() (*http.Response, error) {
 	c.httpClient = httplib.Post(c.url)
 	for k, v := range c.headers {
 		c.httpClient.Header(k, v)
@@ -280,7 +280,7 @@ func (c *oauthStreamClient) close() {
 
 }
 
-func (o *OAuthClient) connect(url_ string, OAuthToken string, OAuthTokenSecret string, form map[string]string) os.Error {
+func (o *OAuthClient) connect(url_ string, OAuthToken string, OAuthTokenSecret string, form map[string]string) error {
 	nonce := getNonce(40)
 
 	params := map[string]string{
@@ -342,7 +342,7 @@ func (o *OAuthClient) connect(url_ string, OAuthToken string, OAuthTokenSecret s
 	return nil
 }
 
-func (o *OAuthClient) SiteStream(OAuthToken string, OAuthTokenSecret string, ids []int64) os.Error {
+func (o *OAuthClient) SiteStream(OAuthToken string, OAuthTokenSecret string, ids []int64) error {
 	//build the follow string
 	var buf bytes.Buffer
 	for i, id := range ids {
