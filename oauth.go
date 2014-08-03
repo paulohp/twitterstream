@@ -77,9 +77,9 @@ func signatureBase(httpMethod string, base_uri string, params map[string]string)
 	buf.WriteString(URLEscape(base_uri))
 	buf.WriteString("&")
 
-	var keys vector.StringVector
+	var keys []string = []string{}
 	for k, _ := range params {
-		keys.append(k)
+		append(keus, k)
 	}
 
 	sort.Strings(keys)
